@@ -35,20 +35,20 @@ if (in_array($APIKEY, $headers)){ //if the API key is in the http header, contin
 				//then use vtysh to find the current ospf neighbors
 				//and then return that output as JSON to the client
 				$neigh_raw = shell_exec('/usr/bin/vtysh -c "show ip ospf neighbor detail"');
-				$nbr_count = substr_count($neigh_raw, 'Neighbor') / 2 ;
-				$neigh_array = preg_split("/((\r?\n)|(\r\n?))/", $neigh_raw);
-				echo "{";
-				foreach($neigh_array as $line){
-						if (preg_match('/Neighbor [1-2]/', $line)){
-								$neighborset = explode(", ", $line);
-								echo "\"".ltrim($neighborset[0])."\":\"$neighborset[1]\"";
-								if ($nbr_count>1){
+				$nbr_count = substr_count($neigh_raw, 'Neighbor') / 2 ; //find out how many neighbors there are
+				$neigh_array = preg_split("/((\r?\n)|(\r\n?))/", $neigh_raw); //dump the output to an array
+				echo "{"; //start encoding the JSON
+				foreach($neigh_array as $line){ //loop through the output looking for specific neighbor details
+						if (preg_match('/Neighbor [1-2]/', $line)){ //if this line has Neighbor with an IP address following
+								$neighborset = explode(", ", $line); //split the KV pair raw strings into an array
+								echo "\"".ltrim($neighborset[0])."\":\"$neighborset[1]\""; //print the KV pair out in JSON format
+								if ($nbr_count>1){ //if this is not the last neighbor, insert a comma to separate KV pairs
 										echo ",";
 										$nbr_count--;
 								}
 						}
 				}
-				echo "}";
+				echo "}"; //stop encoding the JSON
 				break;
 
 			default: //if the first part of the URL was not found in this switch statement
