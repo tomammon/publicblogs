@@ -31,6 +31,26 @@ if (in_array($APIKEY, $headers)){ //if the API key is in the http header, contin
 				echo json_encode($statictext);
 				break;
 
+			case "ospfneighbors": //if the first part of the URL was "ospfneighbors"
+				//then use vtysh to find the current ospf neighbors
+				//and then return that output as JSON to the client
+				$neigh_raw = shell_exec('/usr/bin/vtysh -c "show ip ospf neighbor detail"');
+				$nbr_count = substr_count($neigh_raw, 'Neighbor') / 2 ;
+				$neigh_array = preg_split("/((\r?\n)|(\r\n?))/", $neigh_raw);
+				echo "{";
+				foreach($neigh_array as $line){
+						if (preg_match('/Neighbor [1-2]/', $line)){
+								$neighborset = explode(", ", $line);
+								echo "\"".ltrim($neighborset[0])."\":\"$neighborset[1]\"";
+								if ($nbr_count>1){
+										echo ",";
+										$nbr_count--;
+								}
+						}
+				}
+				echo "}";
+				break;
+
 			default: //if the first part of the URL was not found in this switch statement
 				//then send back our canned error message
 				echo json_encode($notfound);
