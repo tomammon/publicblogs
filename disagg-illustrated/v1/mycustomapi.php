@@ -63,7 +63,4 @@ if (in_array($APIKEY, $headers)){ //if the API key is in the http header, contin
 } else { // if the API key was not found, return an error
         echo json_encode($autherr);
 }
-
-
-
 ?>
