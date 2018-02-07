@@ -1,0 +1,56 @@
+
+mpls traffic-eng tunnels
+!
+router ospf 100
+ mpls traffic-eng area 0
+ mpls traffic-eng router-id Loopback0
+!
+interface tunnel 1
+ tunnel source Loopback0
+ ip unnumbered Loopback0
+ tunnel destination 192.168.100.1
+ tunnel mode mpls traffic-eng
+ tunnel mpls traffic-eng path-option 5 dynamic
+!
+interface tunnel 4
+ tunnel source Loopback0
+ ip unnumbered Loopback0
+ tunnel destination 192.168.100.4
+ tunnel mode mpls traffic-eng
+ tunnel mpls traffic-eng path-option 5 dynamic
+!
+interface tunnel 5
+ tunnel source Loopback0
+ ip unnumbered Loopback0
+ tunnel destination 192.168.100.5
+ tunnel mode mpls traffic-eng
+ tunnel mpls traffic-eng path-option 5 dynamic
+!
+interface tunnel 6
+ tunnel source Loopback0
+ ip unnumbered Loopback0
+ tunnel destination 192.168.100.6
+ tunnel mode mpls traffic-eng
+ tunnel mpls traffic-eng path-option 5 dynamic
+!
+interface tunnel 7
+ tunnel source Loopback0
+ ip unnumbered Loopback0
+ tunnel destination 192.168.100.7
+ tunnel mode mpls traffic-eng
+ tunnel mpls traffic-eng path-option 5 dynamic
+!
+interface tunnel 13
+ tunnel source Loopback0
+ ip unnumbered Loopback0
+ tunnel destination 192.168.100.13
+ tunnel mode mpls traffic-eng
+ tunnel mpls traffic-eng path-option 5 dynamic
+!
+interface tunnel 14
+ tunnel source Loopback0
+ ip unnumbered Loopback0
+ tunnel destination 192.168.100.14
+ tunnel mode mpls traffic-eng
+ tunnel mpls traffic-eng path-option 5 dynamic
+!
